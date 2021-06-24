@@ -18,10 +18,11 @@ def clean_data(csv_row):
     # last_name
     ### data comes in as name row['name'] = "Last,  First MI"
     last_first = csv_row['Name'].split(",")
-    first = last_first[1].split(' ')[0] #this discards Middle Initial
-    first.strip() # in case of any leading whitespace from the last_first split
+    first_temp = last_first[1].strip() #this removes leading whitespace
+    first = first_temp.split()
     cleaned['last_name'] = last_first[0]
-    cleaned['first_name'] = first
+    cleaned['first_name'] = first[0]
+    # cleaned['first_name'] = last_first[1].strip() #JWS tagged in as a kludge
     # job_title
     cleaned['job_title'] =csv_row['Job Titles']
     # full_or_part_time "P/F"

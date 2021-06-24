@@ -1,0 +1,125 @@
+-- ## Release 3: Queries
+-- Now that we have a database full of employees and their salaries, let's query our database:
+-- 2. Find the employee being paid the least
+-- --
+
+
+-- 1. Find the employee being paid the most
+Select employees.first_name, employees.last_name, max(employees.annual_salary)
+from employees
+group by employees.first_name, employees.last_name
+order by max(employees.annual_salary) desc
+limit 1;
+
+
+
+-- 2. Find the employee being paid the least
+Select employees.first_name, employees.last_name, max(employees.annual_salary)
+from employees
+group by employees.first_name, employees.last_name
+order by max(employees.annual_salary) asc
+limit 1;
+
+-- 3. Find the department with the highest average salary
+select employees.department, avg(employees.annual_salary)::decimal(12,2)
+from employees
+group by employees.department 
+order by avg(employees.annual_salary) desc
+limit 1;
+
+-- 4. Find the department with the lowest average salary
+
+select employees.department, avg(employees.annual_salary)::decimal(12,2)
+from employees
+group by employees.department 
+order by avg(employees.annual_salary) asc
+limit 1;
+
+-- 5. Find the average salary difference between full time and part time workers
+
+-- Multi select statement for comparator?
+
+-- Avg full time salary:
+select avg(employees.annual_salary) 
+from employees
+where full_or_part_time = 'F';
+
+-- Avg part time salaary:
+select avg(employees.annual_salary)
+from employees
+where full_or_part_time = 'P';
+
+-- The comparison
+select ((
+    select avg(employees.annual_salary) 
+    from employees
+    where full_or_part_time = 'F'
+    ) - (
+    select avg(employees.annual_salary)
+    from employees
+    where full_or_part_time = 'P'
+    )
+)::decimal(12,2) as "Full time vs Part Time Average Salary Difference";
+-- 6. Find the most common first name
+select employees.first_name, count(employees.first_name)
+from employees
+group by employees.first_name
+order by count(employees.first_name) desc
+limit 1;
+
+-- 7. Find the most common last name
+select employees.last_name, count(employees.last_name)
+from employees
+group by employees.last_name
+order by count(employees.last_name) desc
+limit 1;
+
+-- 8. If there are people with the same name, find what their job titles, departments, and annual salaries are
+
+select employees.first_name, employees.last_name, count(concat(employees.first_name, employees.last_name)), employees.job_title, employees.department, employees.annual_salary
+from employees
+group by employees.first_name, employees.last_name, employees.job_title, employees.department, employees.annual_salary
+having count(concat(employees.first_name, employees.last_name)) > 1;
+
+select employees.first_name, employees.last_name, employees.id
+from employees
+where employees.first_name ilike 'michael' and employees.last_name ilike 'brooks'
+group by employees.first_name, employees.last_name, employees.id;
+
+select concat(employees.first_name,employees.last_name), employees.annual_salary
+from employees
+limit 5;
+
+select 
+    employees.first_name || ' ' || employees.last_name,
+    employees.job_title,
+    employees.full_or_part_time,
+    employees.annual_salary,
+    count((employees.first_name || employees.last_name))
+from employees
+group by 
+    employees.first_name,
+    employees.last_name,
+    employees.job_title,
+    employees.full_or_part_time,
+    employees.annual_salary
+having count((employees.first_name || employees.last_name)) > 1;
+
+
+select employees.id,
+    employees.first_name || ' ' || employees.last_name as "Full Name",
+    employees.job_title,
+    employees.full_or_part_time,
+    employees.annual_salary
+from employees
+where employees.first_name ilike 'robert'
+    and employees.last_name ilike 'allen'
+group by employees.id,
+    employees.first_name,
+    employees.last_name,
+    employees.job_title,
+    employees.full_or_part_time,
+    employees.annual_salary;
+
+
+-- 
