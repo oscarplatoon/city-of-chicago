@@ -75,51 +75,20 @@ order by count(employees.last_name) desc
 limit 1;
 
 -- 8. If there are people with the same name, find what their job titles, departments, and annual salaries are
-
-select employees.first_name, employees.last_name, count(concat(employees.first_name, employees.last_name)), employees.job_title, employees.department, employees.annual_salary
-from employees
-group by employees.first_name, employees.last_name, employees.job_title, employees.department, employees.annual_salary
-having count(concat(employees.first_name, employees.last_name)) > 1;
-
-select employees.first_name, employees.last_name, employees.id
-from employees
-where employees.first_name ilike 'michael' and employees.last_name ilike 'brooks'
-group by employees.first_name, employees.last_name, employees.id;
-
-select concat(employees.first_name,employees.last_name), employees.annual_salary
-from employees
-limit 5;
-
-select 
-    employees.first_name || ' ' || employees.last_name,
-    employees.job_title,
-    employees.full_or_part_time,
-    employees.annual_salary,
-    count((employees.first_name || employees.last_name))
-from employees
-group by 
-    employees.first_name,
-    employees.last_name,
-    employees.job_title,
-    employees.full_or_part_time,
-    employees.annual_salary
-having count((employees.first_name || employees.last_name)) > 1;
-
-
-select employees.id,
-    employees.first_name || ' ' || employees.last_name as "Full Name",
-    employees.job_title,
-    employees.full_or_part_time,
-    employees.annual_salary
-from employees
-where employees.first_name ilike 'robert'
-    and employees.last_name ilike 'allen'
-group by employees.id,
-    employees.first_name,
-    employees.last_name,
-    employees.job_title,
-    employees.full_or_part_time,
-    employees.annual_salary;
-
-
--- 
+select S.first_name,
+    S.last_name,
+    S.job_title,
+    S.full_or_part_time,
+    S.annual_salary,
+    S.id
+from employees S
+    inner join (
+            select E.first_name,
+                E.last_name
+            from employees E
+        group by E.first_name,
+            E.last_name
+        having count(E.first_name || E.last_name) > 1
+    ) as M ON
+    S.first_name = M.first_name
+    AND S.last_name = M.last_name;
