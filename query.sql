@@ -39,15 +39,18 @@ order by avg(employees.annual_salary) asc
 limit 1;
 
 -- 5. Find the average salary difference between full time and part time workers
+
 -- Multi select statement for comparator?
 -- Avg full time salary:
 select avg(employees.annual_salary)
 from employees
 where full_or_part_time = 'F';
+
 -- Avg part time salaary:
 select avg(employees.annual_salary)
 from employees
 where full_or_part_time = 'P';
+
 -- The comparison
 select (
         (

@@ -1,4 +1,3 @@
-# Your code goes here!
 import csv
 import psycopg2
 import os
@@ -63,22 +62,6 @@ with open('data/chicago_salaries.csv', mode='r') as csv_file:
             cleaned_data['department'],
             cleaned_data['annual_salary'])
         )
-
-    # return ("CREATE TABLE employees (id serial PRIMARY KEY,  varchar(255),  varchar(255),  varchar(60),  varchar,  varchar(255),  int);")
-        #  cursor.execute("INSERT INTO properties (street_address, city, zip_code, state, number_of_beds, number_of_baths, square_feet, property_type, sale_date, sale_price, latitude, longitude) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (
-#             cleaned_data['first_name'],
-#             cleaned_data['last_name'],
-#             cleaned_data['job_title'],
-#             cleaned_data['full_or_part_time'],
-#             cleaned_data['department'],
-#             cleaned_data['annual_salary']))
-
-#             cleaned_data['square_feet'],
-#             cleaned_data['property_type'],
-#             cleaned_data['sale_date'],
-#             cleaned_data['sale_price'],
-#             cleaned_data['latitude'],
-#             cleaned_data['longitude']))
 
 connection.commit()
 connection.close()
